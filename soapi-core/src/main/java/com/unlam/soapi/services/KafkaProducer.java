@@ -18,9 +18,9 @@ public class KafkaProducer {
     @Value(value = "${kafka.string_topic}")
     private String stringTopic;
 
-    public void createString(String username, String eventType) {
+    public void createString(String username, String mensaje) {
 
-        this.kafkaTemplate.send(stringTopic, eventType);
+        this.kafkaTemplate.send(stringTopic, mensaje);
     }
 
     public void createEvent(String username, EventDTO eventType) {

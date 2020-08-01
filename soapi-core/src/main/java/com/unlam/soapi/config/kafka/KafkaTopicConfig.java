@@ -14,27 +14,31 @@ import java.util.Map;
 public class KafkaTopicConfig {
 
     @Value(value = "${kafka.server_config}")
-    private String bootstrapAddress;
+    private String serverConfig;
 
-    @Value(value = "${kafka.event_topic}")
-    private String eventTopic;
     @Value(value = "${kafka.string_topic}")
     private String stringTopic;
+    @Value(value = "${kafka.event_topic}")
+    private String eventTopic;
+    @Value(value = "${kafka.string_partition}")
+    private Integer stringPartition;
+    @Value(value = "${kafka.event_partition}")
+    private Integer eventPartition;
 
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, serverConfig);
         return new KafkaAdmin(configs);
     }
 
     @Bean
     public NewTopic topic1() {
-        return new NewTopic(stringTopic, 3, (short) 1);
+        return new NewTopic(stringTopic, stringPartition, (short) 1);
     }
 
     @Bean
     public NewTopic topic2() {
-        return new NewTopic(eventTopic, 2, (short) 1);
+        return new NewTopic(eventTopic, eventPartition, (short) 1);
     }
 }
